@@ -1,17 +1,30 @@
-const { Router } = require("express");
-// const { } = require("../services/api.js")
+const router = require("express").Router()
+const fs = require("fs")
+const { v4: uuidv4 } = require('uuid');
 
-const router = new Router();
-
-
-
-//GET /api/notes should read the db.json file and return all saved notes as JSON
-router.route("/notes").get((req,res)=>{
-  res.json([{Ok:true}])
-}).post((req,res)=>{
-  res.end()
+router.get("/notes", (req, res)=>{
+ fs.readFile("./db/db.json", (err, data)=>{
+  if(err) throw err;
+  res.send(data)
+ })
 })
-//POST /api/notes should receive a new note to save on the request body, add it to the db.json
-//and then return the new note to the client (unique id)
+
+router.post("/notes", (req, res)=>{
+  console.log(req.body);
+  let newNote = req.body;
+  newNote.id = uuidv4();
+  console.log(newNote);
+  fs.readFile("./db/db.json", (err, data)=>{
+    if(err) throw err;
+  var notes = JSON.parse(data);
+  notes.push(newNote)
+  console.log(notes)
+  fs.writeFile("./db/db.json", JSON.stringify(notes), (err)=>{
+    if(err) throw err;
+    res.send(req.body)
+  })
+  })
+});
+
 
 module.exports = router;
