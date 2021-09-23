@@ -3,7 +3,7 @@ const path = require("path");
 const router = require("./app/routes/notes.js");
 
 const app = express();
-const PORT = 5555;
+const PORT = process.env.PORT || 5555;
 
 // app.use(express.json(),
 //  express.urlencoded({extended:true}),
@@ -23,7 +23,7 @@ app.get('/notes', (req, res)=>{
 app.use("/api", router);
 
 //GET * should return the index.html file
-app.get('*', (req, res)=>{
+app.get('/*', (req, res)=>{
   res.sendFile(path.join(__dirname, "./public/index.html"))
 
   //add an error res

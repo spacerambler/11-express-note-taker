@@ -1,5 +1,3 @@
-console.log('testing')
-
 let noteTitle;
 let noteText;
 let saveNoteBtn;
